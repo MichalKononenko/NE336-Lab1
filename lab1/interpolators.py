@@ -1,7 +1,10 @@
 """
 Contains evaluation interpolators
 """
+from functools import reduce
+from itertools import count
 import numpy as np
+import operator as op
 
 __all__ = ['lagrange_interpolant', 'lagrange_evaluate']
 
@@ -43,3 +46,25 @@ def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
     :param np.ndarray a: The coefficients that 
     """
     return np.polyval(a, x) 
+
+def _permutations(n: int, k: int) -> int:
+    r"""
+    Returns the permutations according to the formula
+
+    .. math::
+        P = \frac{n!}{(n - k)!}
+
+    """
+    if k > n: raise ValueError("k > n. This is not allowed")
+    return reduce(op.mul, [(n - k_i) for k_i in range(0, k)], 1)
+
+def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
+    """
+    """
+    ### A must be reversed
+    reversed_a = a[::-1]
+    return np.array(sum((
+        _permutations(index, n) * reversed_a[index] * x ** (index - n) 
+        for index in range(n, len(a))
+    )))
+

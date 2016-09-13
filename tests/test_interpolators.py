@@ -59,9 +59,9 @@ class TestLagrangeDifferentiate(unittest.TestCase):
     def test_first_given_case(self):
         a = np.array([4., -4., 1.])
         n = 1
-        x = np.array([0., 5., 1.])
+        x = np.array([0., .5, 1.])
 
-        expected_result = np.array([-4., 0., -4.])
+        expected_result = np.array([-4., 0., 4.])
 
         np.testing.assert_array_almost_equal(
             expected_result,
@@ -83,3 +83,16 @@ class TestLagrangeDifferentiate(unittest.TestCase):
                 a, n, x
             )
         )
+
+class TestPermutations(unittest.TestCase):
+
+    def test_permutations_zero(self):
+        self.assertEqual(1, interpolators._permutations(3, 0))
+
+    def test_permutation_all_factors(self):
+        self.assertEqual(6, interpolators._permutations(3, 3))
+
+    def test_permutation_k_bigger_than_n(self):
+        with self.assertRaises(ValueError):
+            interpolators._permutations(3, 5)
+
