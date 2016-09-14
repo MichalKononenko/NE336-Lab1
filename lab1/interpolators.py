@@ -47,21 +47,21 @@ def _vandermonde_matrix(x: np.ndarray) -> np.ndarray:
 
     .. math::
         \begin{bmatrix}
-            1      & x_0    & x_0^2 & \cdots & x_0^{n - 1} \\
-            1      & x_1    & x_1^2 & \cdots & x_1^{n - 1} \\
-            1      & x_2    & x_2^2 & \cdots & x_2^{n - 1} \\
-            \vdots & \ddots &       & \cdots & \vdots      \\
-            1      & x_n    & x_n^2 & \cdots & x_n^{n - 1}
+            1      & x_0    & x_0^2  & \cdots & x_0^{n - 1} \\
+            1      & x_1    & x_1^2  & \cdots & x_1^{n - 1} \\
+            1      & x_2    & x_2^2  & \cdots & x_2^{n - 1} \\
+            \vdots & \vdots & \vdots & \cdots & \vdots      \\
+            1      & x_n    & x_n^2  & \cdots & x_n^{n - 1}
         \end{bmatrix}
 
     The Vandermonde matrix is generated using a nested list comprehension.
 
-    :param :class:`numpy.ndarray` x: The array for which the Vandermonde 
+    :param numpy.ndarray x: The array for which the Vandermonde 
         matrix is to be calculated
     :return: A square matrix of the same length and width as the longest
-        dimension of the input vector of x values. This array is the
-        Vandermonde matrix of the system
-    :rtype: :class:`numpy.ndarray`
+        dimension of the input vector of x values. This array is the 
+        Vandermonde matrix of the system.
+    :rtype: numpy.ndarray
     """
     return np.array(
         [[x_value ** power for power in range(0, len(x))] for x_value in x]
@@ -76,13 +76,13 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     If the Vandermonde matrix is :math:`V`, then this method solves the
     system :math:`Va = y`. 
 
-    :param :class:`numpy.ndarray` x : The list of `x` coordinates that are 
+    :param numpy.ndarray x: The list of `x` coordinates that are 
         to be used when determining the interpolant
-    :param :class:`numpy.ndarray` y : The list of `y` coordinates to be used
+    :param numpy.ndarray y: The list of `y` coordinates to be used
         in drawing the interpolant
     :return: An array with the inerpolant's coefficients
     :rtype: :class:`numpy.ndarray`
-    :raises: :exc:`ValueError` if the length of :var:`x` and :var:`y` do not
+    :raises: :exc:`ValueError` if the length of `x` and `y` do not
         match
     """
     if len(x) != len(y): 
@@ -99,9 +99,9 @@ def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
     to evaluate the interpolant, this method returns the value of the
     Lagrange interpolant formulated from the coefficients
 
-    :param :class:`numpy.ndarray` a: The array of coefficients for the 
+    :param numpy.ndarray a: The array of coefficients for the 
         interpolating polynomial
-    :param :class:`numpy.ndarray` x: The array of x values at which the
+    :param numpy.ndarray x: The array of x values at which the
         polynomial is to be evaluated
     :return: An array of values cotnaing each value at which the 
         interpolating polynomial was evaluated
@@ -146,11 +146,11 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
     formula was developed as a generalization of the first-order derivative
     for an arbitrary polynomial.
 
-    :param :class:`numpy.ndarray` a: The array of polynomial coefficients
+    :param numpy.ndarray a: The array of polynomial coefficients
         that define an interpolating polynomial.
     :param int n: The order of the derivative of the interpolating
         polynomial is to be calculated.
-    :param :class:`numpy.ndarray` x: The values for which the derivative is
+    :param numpy.ndarray x: The values for which the derivative is
         to be evaluated
     """
     reversed_a = a[::-1]
@@ -162,7 +162,7 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
 def lagrange_integrate(a: np.ndarray, x0: float, x1: float) -> float:
     """
     Calculate the first-order definite integral of the interpolant from
-    :var:`x0` to :var:`x1`. This function calculates
+    `x0` to `x1`. This function calculates
 
     .. math::
         \int_{x_0}^{x_1} \sum\limits_{n = 1}^{N} a_n x^n \, \mathrm{d}x

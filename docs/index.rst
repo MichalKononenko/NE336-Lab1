@@ -6,11 +6,30 @@
 Welcome to NE 318 Lab 1's documentation!
 ========================================
 
-Contents:
+API Documentation
+=================
 
-.. toctree::
-   :maxdepth: 2
+Lagrange Interpolators
+----------------------
+.. automodule:: lab1.interpolators
+    :members:
+    :private-members:
 
+Private Methods
+---------------
+
+.. autofunction:: lab1.interpolators._vandermonde_matrix
+
+.. autofunction:: lab1.interpolators._permutations
+
+Documentation for Tests
+=======================
+
+Lagrange Interpolators
+----------------------
+
+.. automodule:: tests.test_interpolators
+    :members:
 
 
 Indices and tables
