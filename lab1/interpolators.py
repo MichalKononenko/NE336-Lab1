@@ -145,6 +145,17 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
 
 def lagrange_integrate(a: np.ndarray, x0: float, x1: float) -> float:
     """
+    Calculate the first-order definite integral of the interpolant from
+    :var:`x0` to :var:`x1`. This function calculates
+
+    .. math::
+        \int_{x_0}^{x_1} \sum\limits_{n = 1}^{N} a_n x^n \, \mathrm{d}x
+
+    :param :class:`numpy.ndarray` a: The interpolant coefficients
+    :param float x0: The lower limit of the definite integral
+    :param float x1: The upper limit of the integral
+    :return: The definite integral
+    :rtype: float
     """
     rev_a = a[::-1]
 
