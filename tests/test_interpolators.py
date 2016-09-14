@@ -96,3 +96,17 @@ class TestPermutations(unittest.TestCase):
         with self.assertRaises(ValueError):
             interpolators._permutations(3, 5)
 
+class TestLagrangeIntegrate(unittest.TestCase):
+    def setUp(self):
+        self.x0 = 0.
+        self.x1 = 1.
+        self.a = [4., -4., 1.]
+
+    def test_integrate(self):
+        expected_result = 0.33333333
+
+        self.assertAlmostEqual(
+            expected_result,
+            interpolators.lagrange_integrate(self.a, self.x0, self.x1)
+        )
+

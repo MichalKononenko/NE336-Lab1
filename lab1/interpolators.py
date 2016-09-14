@@ -68,3 +68,12 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
         for index in range(n, len(a))
     )))
 
+def lagrange_integrate(a: np.ndarray, x0: float, x1: float) -> float:
+    """
+    """
+    rev_a = a[::-1]
+
+    return sum((
+        rev_a[index]/(index + 1) * (x1 ** (index + 1) - x0 ** (index + 1))
+        for index in range(len(rev_a))
+    ))
