@@ -27,8 +27,16 @@ import operator as op
 
 __all__ = [
     'lagrange_interpolant', 'lagrange_evaluate',
-    'lagrange_differentiate', 'lagrange_integrate'
+    'lagrange_differentiate', 'lagrange_integrate',
+    'ArraysNotEqualError'
 ]
+
+class ArraysNotEqualError(ValueError):
+    """
+    Thrown if two arrays that are supposed to be of equal length are
+    not equal in length
+    """
+    pass
 
 def _vandermonde_matrix(x: np.ndarray) -> np.ndarray:
     r"""
@@ -74,8 +82,16 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         in drawing the interpolant
     :return: An array with the inerpolant's coefficients
     :rtype: :class:`numpy.ndarray`
+    :raises: :exc:`ValueError` if the length of :var:`x` and :var:`y` do not
+        match
     """
-    return np.linalg.solve(_vandermonde_matrix(x), y)[::-1]
+    if len(x) != len(y): 
+        raise ArraysNotEqualError("""
+            The length of the x array of %d is not equal to the length
+            of the y array %d
+            """ % (len(x), len(y))
+        )
+    return np.dot(np.linalg.inv(_vandermonde_matrix(x)), y)[::-1]
 
 def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
     """
