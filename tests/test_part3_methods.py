@@ -22,20 +22,21 @@ class TestThreePoints(TestLagrangeInterpolation):
 
     def test_derivative(self):
         derivative_from_interpolant = interpolators.lagrange_differentiate(
-            self.interpolating_coefficients, self.center 
+            self.interpolating_coefficients, 1, self.center 
         )
         derivative_from_difference = p3m.diff_1st_order_finite_difference(
             self.func, self.center, self.spread
         )
 
-        self.assertAlmostEqual(
+        np.testing.assert_array_almost_equal(
             derivative_from_interpolant, derivative_from_difference
         )
 
 class TestFivePoints(TestLagrangeInterpolation):
     def setUp(self):
         self.x_values = np.linspace(0, 1, 5)
-        self.y_values = self.func(self.y_values)
+        self.y_values = self.func(self.x_values)
+        self.spread = 0.1
 
         self.interpolating_coefficients = interpolators.lagrange_interpolant(
             self.x_values, self.y_values
@@ -43,5 +44,13 @@ class TestFivePoints(TestLagrangeInterpolation):
 
     def test_derivative(self):
         derivative_from_difference = p3m.diff_1st_order_four_points(
-            self.func, self.x_values, self.y_values
+            self.func, self.x_values, self.spread
         )
+        derivative_from_interpolant = interpolators.lagrange_differentiate(
+            self.interpolating_coefficients, 1, self.x_values
+        )
+
+        np.testing.assert_array_almost_equal(
+            derivative_from_interpolant, derivative_from_difference
+        )
+

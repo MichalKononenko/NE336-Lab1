@@ -138,6 +138,23 @@ class TestLagrangeDifferentiate(unittest.TestCase):
             )
         )
 
+    def test_differentiate_part_3(self):
+        x_values = np.array([0, 1, 5])
+        y_values = np.array([(lambda x: x*(x-1))(x) for x in x_values])
+        
+        interpolating_coefficients = interpolators.lagrange_interpolant(    
+            x_values, y_values
+        )
+
+        center = np.array([0.5])
+        order = 1
+
+        np.testing.assert_array_almost_equal(
+            np.array([0]), interpolators.lagrange_differentiate(
+                interpolating_coefficients, 1, center
+            )
+        )
+
 class TestPermutations(unittest.TestCase):
     """
     Contains unit tests for :meth:`interpolators._permutations`

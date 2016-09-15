@@ -140,7 +140,7 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
     Uses the formula
 
     .. math::
-        y^{(n)}(x) = \sum\limits_{n = k}^N \frac{n!}{(n - k)!} a_n x^{n - k}
+        y^{(k)}(x) = \sum\limits_{n = k}^N \frac{n!}{(n - k)!} a_n x^{n - k}
 
     To compute the nth order derivative of the Lagrangian interpolant. This
     formula was developed as a generalization of the first-order derivative
@@ -160,14 +160,20 @@ def lagrange_differentiate(a: np.ndarray, n: int, x: np.ndarray) -> np.ndarray:
     )))
 
 def lagrange_integrate(a: np.ndarray, x0: float, x1: float) -> float:
-    """
+    r"""
     Calculate the first-order definite integral of the interpolant from
     `x0` to `x1`. This function calculates
 
     .. math::
-        \int_{x_0}^{x_1} \sum\limits_{n = 1}^{N} a_n x^n \, \mathrm{d}x
+        \int_{x_0}^{x_1} \sum\limits_{n = 0}^{N} a_n x^n \, \mathrm{d}x
 
-    :param :class:`numpy.ndarray` a: The interpolant coefficients
+    using the formula
+
+    .. math::
+        \int_{x_0}^{x_1} \sum\limits_{n = 0}^{N} a_n x^n \, \mathrm{d}x = 
+            \sum\limits_{n = 0}^N \frac{a_n}{n + 1} x^{n + 1}
+
+    :param numpy.ndarray a: The interpolant coefficients
     :param float x0: The lower limit of the definite integral
     :param float x1: The upper limit of the integral
     :return: The definite integral
@@ -179,3 +185,4 @@ def lagrange_integrate(a: np.ndarray, x0: float, x1: float) -> float:
         rev_a[index]/(index + 1) * (x1 ** (index + 1) - x0 ** (index + 1))
         for index in range(len(rev_a))
     ))
+
