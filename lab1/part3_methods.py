@@ -1,5 +1,8 @@
 import numpy as np
 from typing import Callable, Union
+from collections import namedtuple
+from lab1.interpolators import lagrange_interpolant
+from lab1.interpolators import lagrange_evaluate
 
 array_or_number = Union[int, float, np.ndarray]
 
@@ -52,3 +55,25 @@ def diff_2nd_order_four_points(
     f5 = f(center - 2 * spread)
 
     return (-f1 + 16 * f2 - 30 * f3 + 16 * f4 - f5)/(12 * (spread ** 2))
+
+def interpolation_error():
+    points = (5 * value for value in range(1, 10))
+
+    Result = namedtuple('Result', ['n', 'error'])
+
+    results = []
+
+    for point in points:
+        x = np.linspace(0, 2*np.pi, point)
+        y_n = np.sin(x)
+
+        coeffs = lagrange_interpolant(x, y_n)
+
+        y = lagrange_evaluate(coeffs, x)
+
+        error = y_n - y
+
+        results.append(Result(n=point, error=error))
+
+    return results
+

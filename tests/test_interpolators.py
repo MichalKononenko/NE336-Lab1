@@ -60,6 +60,22 @@ class TestLagrangeInterpolant(unittest.TestCase):
             interpolators.lagrange_interpolant(x, y)
         )
 
+    def test_sine_interpolant(self):
+        """
+        A bug was encountered while interpolating 
+        a function for sine. This bug must be fixed
+        """
+        x = np.linspace(0, 2*np.pi, 5)
+        y = np.sin(x)
+
+        coeffs = interpolators.lagrange_interpolant(x, y)
+
+        assert coeffs.any()
+
+        result = interpolators.lagrange_evaluate(coeffs, x)
+
+        np.testing.assert_array_almost_equal(y, result)
+
 class TestLagrangeEvaluate(unittest.TestCase):
     """
     Contains unit tests for :meth:`interpolators.lagrange_evaluate`

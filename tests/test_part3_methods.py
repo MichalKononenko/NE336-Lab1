@@ -54,3 +54,9 @@ class TestFivePoints(TestLagrangeInterpolation):
             derivative_from_interpolant, derivative_from_difference
         )
 
+class TestIterator(TestLagrangeInterpolation):
+    def test_interpolator(self):
+        result = p3m.interpolation_error()
+
+        assert result
+

@@ -107,7 +107,8 @@ def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
         interpolating polynomial was evaluated
     :rtype: :class:`numpy.ndarray`
     """
-    return np.polyval(a, x) 
+    rev_a = a[::-1]
+    return sum((rev_a[index] * x ** index for index in range(0, len(rev_a))))
 
 def _permutations(n: int, k: int) -> int:
     r"""
