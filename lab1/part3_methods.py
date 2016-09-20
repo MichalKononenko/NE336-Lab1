@@ -57,11 +57,14 @@ def diff_2nd_order_four_points(
     return (-f1 + 16 * f2 - 30 * f3 + 16 * f4 - f5)/(12 * (spread ** 2))
 
 def interpolation_error():
-    points = (5 * value for value in range(1, 10))
+    points = (5 * value for value in range(1, 11))
 
     Result = namedtuple('Result', ['n', 'error'])
 
     results = []
+    
+    theoretical_x = np.linspace(0, 2*np.pi, 50)
+    theoretical_y = np.sin(theoretical_x)
 
     for point in points:
         x = np.linspace(0, 2*np.pi, point)
@@ -69,9 +72,9 @@ def interpolation_error():
 
         coeffs = lagrange_interpolant(x, y_n)
 
-        y = lagrange_evaluate(coeffs, x)
+        y = lagrange_evaluate(coeffs, theoretical_x)
 
-        error = y_n - y
+        error = np.linalg.norm(y - theoretical_y)
 
         results.append(Result(n=point, error=error))
 
