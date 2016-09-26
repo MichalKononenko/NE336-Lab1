@@ -39,13 +39,20 @@ class ArraysNotEqualError(ValueError):
     pass
 
 def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
-    """
-    Using :meth:`_vandermonde_matrix`, this method finds the Lagrange
-    interpolant by inverting the Vandermonde matrix and premultiplying it
-    by the vector of ``y`` values provided for the interpolant. 
+    r"""
+    Performs Lagrange interpolation on an array of ``x`` and ``y``
+    values. Returns the coefficients for the Lagrange interpolating
+    polynomial. The Lagrange interpolating polynomial is defined
+    as 
 
-    If the Vandermonde matrix is :math:`V`, then this method solves the
-    system :math:`Va = y`. 
+    .. math::
+        
+        L(x) := \sum\limits_{j = 0}^k y_j 
+            \prod\limits_{\substack{0 \leq m \leq k \\ m \neq j}}^k
+            \frac{x - x_m}{x_j - x_m}
+
+    The names of variables used in the method match those in the 
+    definition above. 
 
     :param numpy.ndarray x: The list of `x` coordinates that are 
         to be used when determining the interpolant
@@ -64,6 +71,32 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         )
 
     def basis_polynomial(j: int) -> np.array:
+        r"""
+        Returns a Lagrange Basis Polynomial for a given index j.
+        The Lagrange basis polynomial is defined as
+
+        .. math::
+            
+            l_j(x) := \prod\limits_{\substack{0 \leq m \leq k \\ m \neq j}}^k 
+                \frac{x - x_m}{x_j - x_m}
+
+        This method makes use of numpy's convolution method to multiply a set
+        of linear polynomials. The values used in the code, as well as in
+        this method's API, are derived from the Lagrange interpolation formula.
+
+
+        .. note::
+            This method must be inside :func:`lagrange_interpolant`, as it
+            scopes the variables ``x`` and ``y`` for Lagrange interpolation,
+            that are located below the stack frame from which this method
+            is called. I don't see a use for ``basis_polynomial`` anywhere
+            outside Lagrange interpolation, so I'm confident in keeping
+            it as a helper method within the ``lagrange_interpolant`` function
+
+        :param int j: The index of the x value for which to skip over
+            Lagrange interpolation
+
+        """
         return reduce(
             np.convolve,
             ([1, -x[m]]/(x[j] - x[m]) for m in range(0, len(y)) if m != j)

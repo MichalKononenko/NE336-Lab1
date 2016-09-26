@@ -18,8 +18,6 @@ Lagrange Interpolators
 Private Methods
 ---------------
 
-.. autofunction:: lab1.interpolators._vandermonde_matrix
-
 .. autofunction:: lab1.interpolators._permutations
 
 Documentation for Tests
