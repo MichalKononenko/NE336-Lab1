@@ -11,15 +11,16 @@ class TestDSCCurve(unittest.TestCase):
         self.curve = part4.DSCCurve(DSC_CURVE_PATH)
 
     def test_crystallization_temperature(self):
-        print(self.curve.crystallization_temperature)
-        assert 2 == 1
         self.assertIsNotNone(self.curve.crystallization_temperature)
 
     def test_melting_temperature(self):
         self.assertIsNotNone(self.curve.melting_temperature)
 
-    def test_first_derivative(self):
-        self.assertIsNotNone(self.curve.first_derivative())
+    def test_derivative(self):
+        self.assertIsNotNone(self.curve.derivative(order=1))
 
     def test_glass_transition_temperature(self):
-        self.assertIsNotNone(self.curve.glass_transition_temperature)
+        self.assertIsNotNone(self.curve.glass_transition_temperature(40, 100)[0])
+
+    def test_phase_changes(self):
+        self.assertIsNotNone(self.curve.phase_changes[0])

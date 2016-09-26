@@ -38,35 +38,6 @@ class ArraysNotEqualError(ValueError):
     """
     pass
 
-def _vandermonde_matrix(x: np.ndarray) -> np.ndarray:
-    r"""
-    For an array of polynomial coefficients x, it formulates the
-    Vandermonde matrix. For a list of x coefficients 
-    :math:`[x_0, x_1, x_2, ... x_n]`, the Vandermonde matrix has the 
-    form
-
-    .. math::
-        \begin{bmatrix}
-            1      & x_0    & x_0^2  & \cdots & x_0^{n - 1} \\
-            1      & x_1    & x_1^2  & \cdots & x_1^{n - 1} \\
-            1      & x_2    & x_2^2  & \cdots & x_2^{n - 1} \\
-            \vdots & \vdots & \vdots & \cdots & \vdots      \\
-            1      & x_n    & x_n^2  & \cdots & x_n^{n - 1}
-        \end{bmatrix}
-
-    The Vandermonde matrix is generated using a nested list comprehension.
-
-    :param numpy.ndarray x: The array for which the Vandermonde 
-        matrix is to be calculated
-    :return: A square matrix of the same length and width as the longest
-        dimension of the input vector of x values. This array is the 
-        Vandermonde matrix of the system.
-    :rtype: numpy.ndarray
-    """
-    return np.array(
-        [[x_value ** power for power in range(0, len(x))] for x_value in x]
-    )
-
 def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     """
     Using :meth:`_vandermonde_matrix`, this method finds the Lagrange
@@ -91,7 +62,15 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
             of the y array %d
             """ % (len(x), len(y))
         )
-    return np.dot(np.linalg.inv(_vandermonde_matrix(x)), y)[::-1]
+
+    def basis_polynomial(j: int) -> np.array:
+        return reduce(
+            np.convolve,
+            ([1, -x[m]]/(x[j] - x[m]) for m in range(0, len(y)) if m != j)
+        )
+
+    return sum((y[j] * basis_polynomial(j) for j in range(0, len(y))))
+
 
 def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
     """

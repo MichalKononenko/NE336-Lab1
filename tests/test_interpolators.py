@@ -5,29 +5,6 @@ import numpy as np
 import unittest
 from lab1 import interpolators
 
-class TestVandermondeMatrix(unittest.TestCase):
-    """
-    Contains unit tests for :meth:`interpolators._vandermonde_matrix`
-    """
-    def setUp(self):
-        self.x = [2, 3, 4]
-
-        self.expected_result = np.array([
-            [1, 2, 4],
-            [1, 3, 9],
-            [1, 4, 16]
-        ])
-
-    def test_vandermonde(self):
-        """
-        Tests that for the `x` values set up in :meth:`setUp`, 
-        the expected result is returned
-        """
-        np.testing.assert_array_almost_equal(
-            self.expected_result,
-            interpolators._vandermonde_matrix(self.x)
-        )
-
 class TestLagrangeInterpolant(unittest.TestCase):
     """
     Contains unit tests for :meth:`interpolators.lagrange_interpolant`
