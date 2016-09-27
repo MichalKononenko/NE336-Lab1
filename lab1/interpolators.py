@@ -60,7 +60,7 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         in drawing the interpolant
     :return: An array with the inerpolant's coefficients
     :rtype: :class:`numpy.ndarray`
-    :raises: :exc:`ValueError` if the length of `x` and `y` do not
+    :raises: :exc:`ArraysNotEqualError` if the length of `x` and `y` do not
         match
     """
     if len(x) != len(y): 
@@ -108,6 +108,41 @@ def divided_difference(
         y_values: np.ndarray, 
         x_values: np.ndarray
     ) -> np.ndarray:
+    r"""
+    Returns the divided difference between a set of ``(x, y)`` coordinates.
+
+    The divided difference :math:`[y_0, y_1, ..., y_j]` is defined as
+
+    .. math::
+        [y_0] = y_0 \\
+        [y_0, y_1] = \frac{y_1 - y_0}{x_1 - x_0} \\
+        [y_0, y_1, ..., y_{j - 1}, y_j] = 
+            \frac{[y_0, ..., y_{j-1}] - [y_1, ..., y_j]}{x_j - x_0}
+    
+    The calculation is done assuming four cases
+
+    1. The divided difference of an empty list is 0
+    2. The divided difference of a list with a single entry is that entry
+    3. The divided difference of a list with two entries is calculated
+        using the definition given in the formula
+    4. The divided difference of any other list is calculated recursively
+        using the third definition given above
+
+     :param numpy.ndarray x_values: The list of `x` coordinates that are 
+        to be used when determining the divided difference
+    :param numpy.ndarray y_values: The list of `y` coordinates to be used
+        in drawing the divided difference
+    :return: An array with the inerpolant's coefficients
+    :rtype: :class:`numpy.ndarray`
+    :raises: :exc:`ArraysNotEqualError` if the length of `x` and `y` do not
+        match
+    """
+    if len(x_values) != len(y_values):
+        raise ArraysNotEqualError(
+        """The arrays for divided_difference are
+            not of equal length. len(x) == %d while len(y) == %d"""
+            % (len(x), len(y))
+        )
     if len(y_values) == 0:
         return np.array([0])
     elif len(y_values) == 1:
@@ -121,6 +156,45 @@ def divided_difference(
         )/(x_values[-1] - x_values[0])
 
 def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray: 
+    r"""
+    Returns the Newton interpolant of a series of points with x and y.
+    Returns the coefficients for the interpolating polynomial, using
+    the same API as :meth:`lagrange_interpolant`
+
+    A Newton interpolant is defined as
+
+    .. math::
+        N(x) := \sum\limits_{j=0}^k a_j n_j(x)
+
+    Where :math:`a_j = [y_0, y_1, ..., y_j]` is the divided difference 
+    between the y coordinate values, and :math:`n_j(x)` are the Newton 
+    basis polynomials. The divided difference is defined recursively
+    as
+
+    .. math::
+        [y_0] = y_0 \\
+        [y_0, y_1] = \frac{y_1 - y_0}{x_1 - x_0} \\
+        [y_0, y_1, ..., y_{j - 1}, y_j] = 
+            \frac{[y_0, ..., y_{j-1}] - [y_1, ..., y_j]}{x_j - x_0}
+
+    The Newton basis polynomials are defined as
+
+    .. math::
+        n_j(x) = \product\limits_{i = 0}^{j - 1} (x - x_j)
+
+    Where possible, notation in the function definitions matches
+    with that of the definitions given above.
+
+
+    :param numpy.ndarray x: The list of `x` coordinates that are 
+        to be used when determining the interpolant
+    :param numpy.ndarray y: The list of `y` coordinates to be used
+        in drawing the interpolant
+    :return: An array with the inerpolant's coefficients
+    :rtype: :class:`numpy.ndarray`
+    :raises: :exc:`ArraysNotEqualError` if the length of `x` and `y` do not
+        match
+    """
     if len(x) != len(y):
         raise ArraysNotEqualError(
         """The arrays for divided_difference are
