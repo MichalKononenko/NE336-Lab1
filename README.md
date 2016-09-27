@@ -1,2 +1,2 @@
-# NE318-Lab1
-NE 318 Lab 1
+# NE336-Lab1
+NE 336 Lab 1
