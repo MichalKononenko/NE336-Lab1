@@ -193,6 +193,12 @@ def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     Where possible, notation in the function definitions matches
     with that of the definitions given above.
 
+    .. note::
+        The calls to ``[::-1]`` are needed to reverse the polynomial,
+        in order for :meth:`numpy.polynomial.polynomial.polyadd` to work
+        properly. The result is then reversed at the end of the method,
+        in order to adhere to the convention described in the module
+        docstring.
 
     :param numpy.ndarray x: The list of `x` coordinates that are 
         to be used when determining the interpolant
@@ -211,6 +217,9 @@ def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         )
     
     def n(j: int) -> np.ndarray:
+        """
+        Returns the Newton basis polynomial for a given index j 
+        """
         return reduce(
             np.convolve, 
             ([1, -x[i]] for i in range(0,j)), 
@@ -218,6 +227,9 @@ def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         )
 
     def a(j: int) -> np.ndarray:
+        """
+        Returns the pre-multiplication factor for a Newton interpolant
+        """
         return _divided_difference(y[0:j+1], x[0:j+1])
 
     coeffs = reduce(
