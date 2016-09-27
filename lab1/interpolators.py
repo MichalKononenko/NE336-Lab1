@@ -114,9 +114,9 @@ def _divided_difference(
     The divided difference :math:`[y_0, y_1, ..., y_j]` is defined as
 
     .. math::
-        [y_0] = y_0 \\
-        [y_0, y_1] = \frac{y_1 - y_0}{x_1 - x_0} \\
-        [y_0, y_1, ..., y_{j - 1}, y_j] = 
+        [y_0] &= y_0 \\
+        [y_0, y_1] &= \frac{y_1 - y_0}{x_1 - x_0} \\
+        [y_0, y_1, ..., y_{j - 1}, y_j] &= 
             \frac{[y_0, ..., y_{j-1}] - [y_1, ..., y_j]}{x_j - x_0}
     
     The calculation is done assuming four cases
@@ -136,7 +136,7 @@ def _divided_difference(
         to failure. The reason it's out here is so that I can unit test
         it effectively.
 
-     :param numpy.ndarray x_values: The list of `x` coordinates that are 
+    :param numpy.ndarray x_values: The list of `x` coordinates that are 
         to be used when determining the divided difference
     :param numpy.ndarray y_values: The list of `y` coordinates to be used
         in drawing the divided difference
@@ -180,15 +180,15 @@ def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     as
 
     .. math::
-        [y_0] = y_0 \\
-        [y_0, y_1] = \frac{y_1 - y_0}{x_1 - x_0} \\
-        [y_0, y_1, ..., y_{j - 1}, y_j] = 
+        [y_0] &= y_0 \\
+        [y_0, y_1] &= \frac{y_1 - y_0}{x_1 - x_0} \\
+        [y_0, y_1, ..., y_{j - 1}, y_j] &= 
             \frac{[y_0, ..., y_{j-1}] - [y_1, ..., y_j]}{x_j - x_0}
 
     The Newton basis polynomials are defined as
 
     .. math::
-        n_j(x) = \product\limits_{i = 0}^{j - 1} (x - x_j)
+        n_j(x) = \prod\limits_{i = 0}^{j - 1} (x - x_j)
 
     Where possible, notation in the function definitions matches
     with that of the definitions given above.

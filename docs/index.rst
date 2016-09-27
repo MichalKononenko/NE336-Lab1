@@ -18,6 +18,8 @@ Lagrange Interpolators
 Private Methods
 ---------------
 
+.. autofunction:: lab1.interpolators._divided_difference
+
 .. autofunction:: lab1.interpolators._permutations
 
 Documentation for Tests
@@ -28,6 +30,7 @@ Lagrange Interpolators
 
 .. automodule:: tests.test_interpolators
     :members:
+    :undoc-members:
 
 
 Indices and tables
