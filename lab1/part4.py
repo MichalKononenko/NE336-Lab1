@@ -95,4 +95,17 @@ class DSCCurve(object):
         coeffs = lagrange_interpolant(x, y)
 
         return lagrange_integrate(coeffs, lower_limit, upper_limit)
+    
+    def interpolant(self, lower_limit, upper_limit): 
+        points_from_curve = [
+            point for point in self.data
+            if lower_limit <= point.temperature <= upper_limit
+        ]
+
+        x = np.array([point.temperature for point in points_from_curve])
+        y = np.array([point.heat_flux for point in points_from_curve])
+
+        coeffs = lagrange_interpolant(x, y)
+
+        return coeffs
 

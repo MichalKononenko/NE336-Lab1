@@ -104,6 +104,46 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
 
     return sum((y[j] * basis_polynomial(j) for j in range(0, len(y))))
 
+def divided_difference(
+        y_values: np.ndarray, 
+        x_values: np.ndarray
+    ) -> np.ndarray:
+    if len(y_values) == 0:
+        return np.array([0])
+    elif len(y_values) == 1:
+        return y_values
+    elif len(y_values) == 2:
+        return (y_values[1] - y_values[0])/(x_values[1] - x_values[0])
+    else:
+        return (
+                divided_difference(y_values[1:], x_values[1:]) - \
+                divided_difference(y_values[:-1], x_values[:-1])
+        )/(x_values[-1] - x_values[0])
+
+def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray: 
+    if len(x) != len(y):
+        raise ArraysNotEqualError(
+        """The arrays for divided_difference are
+            not of equal length. len(x) == %d while len(y) == %d"""
+            % (len(x), len(y))
+        )
+    
+    def n(j: int) -> np.ndarray:
+        return reduce(
+            np.convolve, 
+            ([1, -x[i]] for i in range(0,j)), 
+            np.array([1])
+        )
+
+    def a(j: int) -> np.ndarray:
+        return divided_difference(y[0:j+1], x[0:j+1])
+
+    coeffs = reduce(
+        np.polynomial.polynomial.polyadd,
+        ((a(j) * n(j))[::-1] for j in range(0, len(x)))
+    )
+
+    return coeffs[::-1]
 
 def lagrange_evaluate(a: np.ndarray, x: np.ndarray) -> np.ndarray:
     """

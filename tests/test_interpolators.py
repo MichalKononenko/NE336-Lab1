@@ -53,6 +53,69 @@ class TestLagrangeInterpolant(unittest.TestCase):
 
         np.testing.assert_array_almost_equal(y, result)
 
+class TestDividedDifferences(unittest.TestCase):
+    def test_single_case(self):
+        x = np.array([0])
+        y = np.array([1])
+
+        np.testing.assert_array_almost_equal(
+            y, interpolators.divided_difference(y, x)
+        )
+
+    def test_double_case(self):
+        x = np.array([0, 1])
+        y = np.array([1, 2])
+
+        expected_result = (y[1] - y[0])/(x[1] - x[0])
+
+        np.testing.assert_array_almost_equal(
+            expected_result, interpolators.divided_difference(y, x)
+        )
+
+    def test_recursive_case(self):
+        x = np.array([0, 1, 2])
+        y = np.array([1, 2, 3])
+
+        expected_result = np.array([0])
+        np.testing.assert_array_almost_equal(
+            expected_result,
+            interpolators.divided_difference(y, x)
+        )
+
+    def test_empty_list(self):
+        x = []
+        y = []
+
+        expected_result = np.array([0])
+
+        np.testing.assert_array_almost_equal(
+            expected_result,
+            interpolators.divided_difference(y, x)
+        )
+
+class TestNewtonInterpolant(unittest.TestCase):
+    """
+    Contains unit tests for :meth:`interpolators.newton_interpolant`
+    """
+    def test_unequal_x_and_y_array(self):
+        x = np.array([0., 0.5])
+        y = np.array([1., 0., 1.])
+        assert len(x) != len(y)
+
+        with self.assertRaises(interpolators.ArraysNotEqualError):
+            interpolators.newton_interpolant(x, y)
+
+    def test_given_test_case(self):
+        x = np.array([0, .5, 1.])
+        y = np.array([1., 0., 1.])
+
+        expected_result = np.array([4., -4., 1.])
+
+        np.testing.assert_array_almost_equal(
+            expected_result,
+            interpolators.newton_interpolant(x, y)
+        )
+
 class TestLagrangeEvaluate(unittest.TestCase):
     """
     Contains unit tests for :meth:`interpolators.lagrange_evaluate`
