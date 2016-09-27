@@ -4,8 +4,8 @@ set of (x, y) points, or a given set of polynomial coefficients.
 Functions for calculating the nth order derivative and first-order definite
 integral of a Lagrangian interpolant.
 
-As is Python convention, functions beginning with an underscore `_`, are private.
-This means they're not an intended part of this module's API.
+As is Python convention, functions beginning with an underscore `_`, are 
+private. This means they're not an intended part of this module's API.
 
 .. note::
     In this module, an array of polynomial coefficients is assumed to have
