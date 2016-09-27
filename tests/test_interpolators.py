@@ -59,14 +59,14 @@ class TestDividedDifferences(unittest.TestCase):
         y = np.array([0, 1, 2, 3])
 
         with self.assertRaises(interpolators.ArraysNotEqualError):
-            interpolators.divided_difference(x, y)
+            interpolators._divided_difference(x, y)
 
     def test_single_case(self):
         x = np.array([0])
         y = np.array([1])
 
         np.testing.assert_array_almost_equal(
-            y, interpolators.divided_difference(y, x)
+            y, interpolators._divided_difference(y, x)
         )
 
     def test_double_case(self):
@@ -76,7 +76,7 @@ class TestDividedDifferences(unittest.TestCase):
         expected_result = (y[1] - y[0])/(x[1] - x[0])
 
         np.testing.assert_array_almost_equal(
-            expected_result, interpolators.divided_difference(y, x)
+            expected_result, interpolators._divided_difference(y, x)
         )
 
     def test_recursive_case(self):
@@ -86,7 +86,7 @@ class TestDividedDifferences(unittest.TestCase):
         expected_result = np.array([0])
         np.testing.assert_array_almost_equal(
             expected_result,
-            interpolators.divided_difference(y, x)
+            interpolators._divided_difference(y, x)
         )
 
     def test_empty_list(self):
@@ -97,7 +97,7 @@ class TestDividedDifferences(unittest.TestCase):
 
         np.testing.assert_array_almost_equal(
             expected_result,
-            interpolators.divided_difference(y, x)
+            interpolators._divided_difference(y, x)
         )
 
 class TestNewtonInterpolant(unittest.TestCase):

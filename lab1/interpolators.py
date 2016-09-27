@@ -26,9 +26,9 @@ import numpy as np
 import operator as op
 
 __all__ = [
-    'lagrange_interpolant', 'lagrange_evaluate',
-    'lagrange_differentiate', 'lagrange_integrate',
-    'ArraysNotEqualError'
+    'lagrange_interpolant', 'newton_interpolant',
+    'lagrange_evaluate', 'lagrange_differentiate', 
+    'lagrange_integrate', 'ArraysNotEqualError'
 ]
 
 class ArraysNotEqualError(ValueError):
@@ -104,7 +104,7 @@ def lagrange_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
 
     return sum((y[j] * basis_polynomial(j) for j in range(0, len(y))))
 
-def divided_difference(
+def _divided_difference(
         y_values: np.ndarray, 
         x_values: np.ndarray
     ) -> np.ndarray:
@@ -127,6 +127,14 @@ def divided_difference(
         using the definition given in the formula
     4. The divided difference of any other list is calculated recursively
         using the third definition given above
+
+    .. note::
+
+        Although I can't see much use for this method outside of Newton
+        interpolation, the fact that this method is doing a bunch of
+        recursion in a language that isn't Haskell makes it quite prone
+        to failure. The reason it's out here is so that I can unit test
+        it effectively.
 
      :param numpy.ndarray x_values: The list of `x` coordinates that are 
         to be used when determining the divided difference
@@ -151,8 +159,8 @@ def divided_difference(
         return (y_values[1] - y_values[0])/(x_values[1] - x_values[0])
     else:
         return (
-                divided_difference(y_values[1:], x_values[1:]) - \
-                divided_difference(y_values[:-1], x_values[:-1])
+                _divided_difference(y_values[1:], x_values[1:]) - \
+                _divided_difference(y_values[:-1], x_values[:-1])
         )/(x_values[-1] - x_values[0])
 
 def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray: 
@@ -210,7 +218,7 @@ def newton_interpolant(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         )
 
     def a(j: int) -> np.ndarray:
-        return divided_difference(y[0:j+1], x[0:j+1])
+        return _divided_difference(y[0:j+1], x[0:j+1])
 
     coeffs = reduce(
         np.polynomial.polynomial.polyadd,
