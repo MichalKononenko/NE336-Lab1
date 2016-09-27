@@ -54,6 +54,13 @@ class TestLagrangeInterpolant(unittest.TestCase):
         np.testing.assert_array_almost_equal(y, result)
 
 class TestDividedDifferences(unittest.TestCase):
+    def test_unequal_x_and_y_array(self):
+        x = np.array([0, 1])
+        y = np.array([0, 1, 2, 3])
+
+        with self.assertRaises(interpolators.ArraysNotEqualError):
+            interpolators.divided_difference(x, y)
+
     def test_single_case(self):
         x = np.array([0])
         y = np.array([1])

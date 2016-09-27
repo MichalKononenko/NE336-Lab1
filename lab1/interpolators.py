@@ -141,7 +141,7 @@ def divided_difference(
         raise ArraysNotEqualError(
         """The arrays for divided_difference are
             not of equal length. len(x) == %d while len(y) == %d"""
-            % (len(x), len(y))
+            % (len(x_values), len(y_values))
         )
     if len(y_values) == 0:
         return np.array([0])
