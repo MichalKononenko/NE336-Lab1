@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to NE 318 Lab 1's documentation!
+Welcome to NE 336 Lab 1's documentation!
 ========================================
 
 API Documentation
